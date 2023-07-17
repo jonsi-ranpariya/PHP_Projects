@@ -1,0 +1,71 @@
+*, *:before, *:after {
+  margin: 0px; 
+  padding: 0px; 
+  box-sizing: border-box;
+}
+
+/*[ Size ]*/
+.size1 {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/*[ Width ]*/
+.wsize1 {
+  max-width: 100%;
+  width: 880px;
+}
+
+
+/*[ Background ]*/
+.bg1 {
+  background-color: rgba(255,255,255,0.8);
+}
+
+.bg-img1 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+/*
+[ Border ]*/
+.bor1 {
+  border-radius: 15px;
+}
+
+.flex-w {
+  flex-wrap: wrap;
+}
+
+.p-t-10 
+{
+  padding-top: 10%;
+}
+.p-b-5 {
+  padding-bottom: 5%;
+}
+.p-l-30 {
+  padding-left: 30%;
+}
+.p-r-20 {
+  padding-right: 20%;
+}
+
+.p-t-3{
+  padding-top: 3%;
+}
+.p-b-5 {
+  padding-bottom: 5%;
+}
+.p-l-3 {
+  padding-left: 3%;
+}
+.p-r-3 {
+  padding-right: 3%;
+}
+.img{
+  width: 100%;
+}
+

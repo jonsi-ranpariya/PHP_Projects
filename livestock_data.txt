@@ -1,0 +1,56 @@
+ <tbody>
+      <?php
+            $query="SELECT * FROM item_master where isdelete = 0 order by item";								//not delete display  where isdelete = 0 
+            $result = sqlsrv_query($con,$query);
+            while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+
+            $query1="SELECT SUM(qnty) as qnty FROM inward where i_code = '".$row['id']."' and status = 'stock' and isdelete != 'true'" ;		// SUM(qnty) as qnty
+            $result1=sqlsrv_query($con,$query1);														//and status = 'stock' and isdelete != 'true'
+            $row1 =sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC);
+
+            $query2="SELECT SUM(qnty) as qnty FROM issue where item_category = '".$row['id']."' and status = 'use'";
+            $result2=sqlsrv_query($con,$query2);
+            $row2=sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC);
+            $stock = $row1['qnty'] - $row2['qnty'];													// $stock = $row1['qnty'] - $row2['qnty'];	
+            ?>
+            <tr>
+              <td class="item"><?php echo $row['item'];?></td>
+              <td><?php echo $row1['qnty'];?></td>
+              <td><?php echo $row2['qnty'];?></td>
+              <td><?php echo $stock;?></td>
+              <td class="sto"><button type="button" class="btn btn-primary py-1 px-2 mx-3 action" id="<?php echo $row['id']; ?>">View</button></td>
+            </tr>
+            <?php } ?>
+          </tbody>
+--------------------------------------------------------------------item load [view buton click modal header]- display load item name--------------------------------------------
+ajex::::::::var declare under
+$('#viewdata').text($(this).closest('tr').find('.item').text()); 							/*view unique[selected item view]in modal [id]*/
+
+<h4><strong id="viewdata" class="mx-2 primary"></strong></h4>								/*MODAL HEADER  id="viewdata" */	
+
+CSS::::::
+/* #viewdata{
+        color: darkslategray;                                                      //OPTIONALLY
+      }*/			
+------------------------------------------------------------------qntity[total]----------------------------------------------------------------------$qnty=0;																				//     $qnty=0;
+	 while($row = sqlsrv_fetch_array($run, SQLSRV_FETCH_ASSOC)){
+$output .= '
+            <tr>
+                <td>'. $row['date']->format('d-M-y') .'</td>
+                <td>'. $row['item'] .'</td>
+                <td>'. $row['qnty'] .'</td>
+                <td></td>
+            </tr>    
+    ';
+    $qnty += $row['qnty'];																	//   $qnty += $row['qnty'];
+    }
+
+$output .= '
+            <tr style="background:lightgray;"> 
+                <td align="right"><b>TOTAL Inward =></b></td>
+                <td><b>'.$qnty.'</b></td>															// <td><b>'.$qnty.'</b></td>
+                <td></td>
+                <td></td>
+            </tr>  
+   ';	
+		

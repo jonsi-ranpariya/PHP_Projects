@@ -1,0 +1,403 @@
+-------------------------------------MODAL CLOSE----------------------------------------- 
+  $(document).ready(function(){
+      $('#Add_master').modal({
+          backdrop: 'static',
+          keyboard: false  // to prevent closing with Esc button (if you want this too)
+      })
+DATE::::::format(a.issue_date, 'dd-MMM-yyyy') as issue_date
+
+ /*input spin remove*/
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+             margin: 0;
+            }
+------------------------------------serchable Dropdown----------------------
+<!-- included serchable dropdown css -->
+    <link href='css/select2.min.css' rel='stylesheet' type='text/css'>
+
+ /*inward dropdown searching*/
+    .select2-container--default .select2-results>.select2-results__options{
+        background-color:white;
+    }
+    .select2-container--open .select2-dropdown--below{
+        background-color:white;
+    }
+    .select2-container {
+        min-width: 100%;
+    }
+    .select2-container .select2-selection--single{
+        height:34px !important;
+    }
+   .select2-container--default .select2-selection--single{
+        border: 1px solid #ccc !important; 
+        border-radius: 0px !important; 
+   }
+
+----class="party_name"
+<script src='js/select2.min.js' type='text/javascript'></script> 
+
+  $(document).ready(function() {
+                $(".party_name").select2();
+            });
+----------------------------------------------Autocomplete suggetion------------
+ <!-- jQuery UI  autocomplte-->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+CSS::::::::::::::::
+/*  autocomplete */
+    .ui-autocomplete {
+        font-family: serif !important;
+        font-size: 15px !important;
+        max-height: 150px;
+        max-width: 280px;
+        overflow-y: auto;*/
+    /* prevent horizontal scrollbar */
+       overflow-x: hidden;
+        background-color: #66d9ff !important;
+        border-radius: 10px;
+        z-index: 21500 !important;
+    }
+
+Input:::::::::::
+	onFocus="getId2(this)" 
+i_code[hidden]:::::::
+<input type="hidden" class="r_icode" name="r_icode[]"></td> 
+
+/*------ ADD222 INWARD autocomplete textbox-----*/
+    function getId2(txtBoxRef) {
+        //console.log('function call');
+        var f = true; //check if enter is detected
+        $(txtBoxRef).keypress(function (e) {
+            if (e.keyCode == '13' || e.which == '13')
+            {
+                f = false;
+            }
+        });
+       $(txtBoxRef).autocomplete({      
+            source: function( request, response ) {
+            // Fetch data
+           $.ajax({
+                url: "add2item.php",
+                type: 'post',
+                 dataType: "json",
+                data: {
+                item: request.term
+             },
+                success: function( data ) {
+                    response( data );
+                    console.log(data);
+                    }
+                });
+            },
+                select: function (event, ui) {
+                  $(this).closest('tr').find('.item2').val(ui.item.label);
+                   $(this).closest('tr').find('.r_icode').val(ui.item.id);
+                   return false;
+            },
+        change: function (event, ui)  //if not selected from Suggestion
+        {
+            if (f){
+                if (ui.item == null){
+                    $(this).val('');
+                    $(this).focus();
+                  }
+                  
+                    }
+                }
+            });
+        }
+
+add2item.php:::::::::::::::::::
+<?php
+include('dbcon2.php');
+if (isset($_POST['item'])) {
+
+    $query = "SELECT * FROM rm_item WHERE (m_code = '143' or (m_code = '138' AND s_code = '866') ) and item LIKE '%".$_POST["item"]."%'";  
+    $result = sqlsrv_query($conn,$query);
+    while($row=sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC) ){
+
+       $response[] = array("label"=>$row['item'],"id"=>$row['i_code']);
+    }
+    echo json_encode($response);
+
+  }
+------------------------------------Dropdoen select row color change---------------------------------------------------------------
+<select  class="cat party_name">                                            //selecte class="cat"
+<input type="hidden" name="icode[]" class="icode">                          //hidden input class="icode"                    
+  
+  /*inward i_code */
+      $(document).on('change','.cat',function(){
+       $(this).closest('tr').find('.icode').val($(this).val());
+    });
+
+CSS::::::::::::
+ .color{
+    background-color: #dac3de !important;
+   }
+   .color input{
+     background-color: transparent;
+   }
+
+$(document).on('change','.party_name',function(){
+   $(this).closest('tr').addClass('color');
+});
+
+--------------------------------------------------CHECK BOX SELECTED SELECTE ALL----------------------------------------
+/*inward checkbox select all row*/
+$('#selectAll').click(function(e){
+    $(this).toggleClass('clicked');
+    $(this).closest('table').find('input[type="checkbox"]').prop('checked', $(this).hasClass('clicked'))
+});
+
+<TH><input type="checkbox" id="selectAll" class="check"></th>
+
+-----------------------------------------------------select check data save---------------------------------------------------------
+ <td><input type="checkbox" name="check_box[]" value="<?php echo $row['p_item'] ?>" class="check_box check"></td>              //  class="checkox"  
+ <select  class="cat">
+ /*Checkbox select data save[category required] */
+        $(document).on('click','.check_box',function(){
+            if (this.checked) {
+                $(this).closest('tr').find('.cat').prop('required',true);
+            }
+            else{
+                $(this).closest('tr').find('.cat').prop('required',false);
+            }
+        });
+
+<input type="hidden" name="item[]" class="rm_icode" value="<?php echo $row['i_code'] ?>"></td>						//item icode get 
+ 
+/* select checkbox [get hidden item icode] */
+        $(document).on('click','.check_box',function(){
+            var x = $(this).val();
+            if($(this).prop("checked")){
+                $(this).closest('tr').find('.rm_icode').val(x);
+                //$(this).closest('tr').find('.upload').attr('required',true);
+            }
+            else{
+                $(this).closest('tr').find('.rm_icode').val('');
+            }
+        });
+
+ /* code for delete and save the main page table  */
+        $('#save,#cancel').click(function(){                  
+            if(confirm("Are you sure you want to Save this?")){
+                var id = [];
+                $('.check_box:checked').each(function(i){
+                    id[i] = $(this).val();   
+                });
+                if(id.length === 0){
+                    alert("Please Check at least one checkbox");
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        });
+
+--------------------------------------------------drop select option to open modal----------------------------------------------
+<td>  
+<select name="stock[]" class="form-control type2" id="1" required>							// id="1" class="type2"
+              <option value="stock">stock</option>
+              <option value="scrap">scrap</option>										//value="scrap"
+              <option value="use">use</option
+   </select>
+                                             <!-- value current page store -->
+                       <input type="hidden" name="mtype[]" id="1mtype2">					//id="1mtype2" [id="1"add]]
+                       <input type="hidden" name="mcno[]" id="1mcno2">
+                       <input type="hidden" name="person[]" id="1person2">
+                       <input type="hidden" name="dpnt[]" id="1depart2">
+                       <input type="hidden" name="remark[]" id="1remark2">
+                       <input type="hidden" name="cat[]" id="1types2">
+                       <input type="hidden" name="old_part_received[]" id="1slect2">
+                       </td>
+
+ /*Inward Add [select  scrap] modal open */
+            $(document).on('change','.type2',function(){
+            var y=$(this).val();
+            var id=$(this).attr('id');						//<input type="hidden" value="" id="hello">  
+												// id="mtype1"  //id="hello"
+            
+            var pqr=' <div><form action="addinward_db.php"  method="POST" id="form3"><div class="row"><div class="col-lg-5"><input type="hidden" value="" id="hello"><label>Select Material Issue To..</label><select class="form-control border-info mtype mtype1" id="mtype1"  required><option disabled="true">--Select Issue To--</option><option value="itomc"> Issue to Machine </option>
+                      <option value="itope"> Issue to Person </option><option value="itode" > Issue to Department </option></select></div></div><br><br><div class="row"><div class="col-sm-6 input-group mb-2 w-50 aaaa bbbb">';
+            pqr += '<label class="form-control bg-secondary text-white fw-bold text-center mx-2">MC_Number</label><input type="text" onFocus="Searchmc(this)" id="mcno1"  class="form-control border-info mcno mcno1"></div><div class="input-group mb-2 w-50 aaaa">';
+            pqr += '<label class="form-control bg-secondary text-white fw-bold text-center mx-2">Person_Name</label><input type="text" onFocus="Searchperson(this)"  id="person1" class="form-control border-info person person1"></div><div class="input-group mb-2 w-50"><label class="form-control bg-secondary text-white fw-bold text-center mx-2">DepartMent</label><input type="text"  onFocus="Searchdpmnt(this)" id="dpnt1" class="form-control border-info dpnt dpnt1"> </div><div class="input-group mb-2 w-50"><label class="form-control bg-secondary text-white fw-bold text-center mx-2">Remark</label><input type="text" class="form-control border-info remark remark1" id="remark1"></div>';
+            pqr += '<div class="input-group mb-2 w-50"><label class="form-control bg-secondary text-white fw-bold text-center mx-2">Issued Category Type</label><select class="form-control type border-info type3" aria-label="Default select example" id="type3" required><option disabled="true" selected class="bg-primary text-white" >--Select Category--</option><option class="bg-secondary text-white" value="new">NEW</option><option class="bg-secondary text-white" value="replace">REPLACE</option></select></div><div class="input-group mb-2  w-50 oldps"><label class="form-control bg-secondary text-white fw-bold text-center mx-2">Old Part Status</label><select  class="form-control border-info select_hide slect slect1" aria-label="Default select example" id="slect1" >
+                    <option selected class="bg-primary text-white" disabled="true">--Select--</option><option class="bg-secondary text-white hii">REPAIR</option><option class="bg-secondary text-white hii">SCRAP</option><option class="bg-secondary text-white hii">STOCK</option></select></div></div></form></div>';
+            if (y =='scrap') {
+            $('.childmodal').html(pqr);
+            $('#hello').val(id);
+            $('#Add_stock').modal('show');
+            }
+            });
+----------MODAL BODY---------
+<div class="modal-body childmodal child" id="a1" >						//CLASS="childmodal"
+                            <!--  load daynamacally -->
+</div>
+
+-----------------------
+/*ADD modal hide and show */
+            $(document).on('change','.type3',function(){
+            var a = $(this).val();
+            if (a == 'new') {
+            $(".hii").hide();
+            }
+            else {
+            $(".hii").show();
+            }
+            });
+-------------------------------
+  /*Select Material Issue To.. [select option] change filed*/
+            $(document).on('change','.mtype',function(){
+            var y=$(this).val();
+            if (y=='itode') {
+            $(".aaaa").hide();
+            }
+            else if (y=='itope') {
+            $(".bbbb").hide();
+            }
+            else{
+            $(".aaaa").show();
+            }
+            });
+------------------------------------
+ //UPDATE
+            $(document).on('click','.update',function(){
+            var s = $("#hello").val();
+            var a = $("#mtype1").val();
+            var b = $("#mcno1").val();
+            var c = $("#person1").val()
+            var x = $("#dpnt1").val();
+            var y = $("#remark1").val();
+            var z = $("#type3").val();
+            var p = $("#slect1").val();
+            $("#"+s+"mtype2").val(a);
+            $("#"+s+"mcno2").val(b);
+            $("#"+s+"person2").val(c);
+            $("#"+s+"depart2").val(x);
+            $("#"+s+"remark2").val(y);
+            $("#"+s+"types2").val(z);
+            $("#"+s+"slect2").val(p);
+            $('#Add_stock').modal('hide');
+            });
+--------auto_suggetion --------------------
+
+inward file getdpnt.php,getmc.php,getperson.php
+-------------------------------------------------------------------------issue item selected input item auto load---------------------------------------------------
+<select class="form-control subgrade border-secondary" name="subgrade[]">												//class="subgrade"
+              <option disabled="true">---select item---</option>
+ </select>
+
+
+  /*issue item*/
+            $(document).on('change','.item',function(){
+                let $this=$(this);
+                var x = $this.closest('tr').find('.i_code').val();
+            
+                $.ajax({
+                    url: "store/getcategory.php",
+                    type: 'post',
+                    data: {cat:x},
+                    success: function( data ) {
+                        //console.log(data);
+                        $this.closest('tr').find('.subgrade').html(data);
+                    }
+                });
+            });
+
+
+<?php 
+include('..\dbcon.php');
+if (isset($_POST['cat'])) {
+
+$query = "SELECT distinct a.rm_icode ,b.item FROM INWARD a left outer join [RM_software].[dbo].[rm_item] b on a.rm_icode = b.i_code where a.i_code = '".$_POST["cat"]."'";  
+ $result = sqlsrv_query($con,$query);
+ $output ='<option disabled="true" selected="true">--choose item--</option>';
+    while($row=sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC) ){
+ 		$output .='
+              <option value="'.$row['rm_icode'].'">'.$row['item'].'</option>
+
+ 		';
+    }
+    echo $output;
+}
+?>
+-------------------------------------------------------issue total stock display-----------------------
+<td><input type="text" class="form-control  border-secondary stock2" name="stock[]" id="stock" readonly></td>                             //class="stock2"
+  
+/*stock diaplay*/
+    $(document).on('change','.subgrade',function(){
+                let $this=$(this);
+                var y = $(this).val();
+                var x =$(this).closest('tr').find('.i_code').val();
+            
+                $.ajax({
+                    url:"store/getstock.php",
+                    type:'post',
+                    data:{stock:y,cat:x},
+                    success:function(data){
+                        //console.log(data);
+                        $this.closest('tr').find('.stock2').val(data);
+                    }
+                });
+            
+            });
+        });
+
+<?php
+include('..\dbcon.php');
+if (isset($_POST['stock'])) {
+
+	    $query1= "SELECT SUM(qnty) as qnty FROM inward where rm_icode ='".$_POST['stock']."' and i_code='".$_POST['cat']."' and status='stock' and isdelete != 'true' ";
+            $result1=sqlsrv_query($con,$query1);
+            $row1 =sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC);
+
+            $query2="SELECT SUM(qnty) as qnty FROM issue where Item_name='".$_POST['stock']."' and item_category='".$_POST['cat']."' and status = 'use'";
+            $result2=sqlsrv_query($con,$query2);
+            $row2=sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC);
+
+            $stock = $row1['qnty'] - $row2['qnty'];
+ echo $stock;
+}
+?>
+---------------------------------------------------------------------------qnty lessthen stock--------------------------
+ /*qnty less then stock in issue */
+            $("#1qty").focusout(function(){								//id="1qty"
+                var x = $(this).val();
+                var y = ($('#stock').val() == '') ? 0 : $('#stock').val();
+                if(parseFloat(x) > parseFloat(y)){
+                    alert("quntity not sufficiant..");
+                    $(this).val('');
+                    $(this).focus();
+                }
+            });
+
+-------------------------------------------------------
+<!-- input mask -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
+
+
+ /*IP adderess format*/
+      $(document).ready(function(){
+      $('#ip_addrs').inputmask({"mask": "999.999.999.999"});
+      });
+        
+      $(document).ready(function(){
+      $("#Manf_Year").mask("(9999)");
+      });
+
+       $(document).ready(function(){
+      $('.Mac_Add').inputmask({"mask": '**:**:**:**:**:**'});
+      });
+
+     $(document).ready(function(){
+     $('.phone').inputmask({"mask": "(999) 999-9999"});
+     });
+
+
+                 
+
+
+
