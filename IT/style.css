@@ -1,0 +1,96 @@
+*{
+	padding: 0;
+	margin: 0;
+	
+}
+body{
+	min-height: 100vh;
+	overflow-x: hidden;
+}
+.content{
+	position: relative;
+	width: 100%;
+}
+.cardBox{
+	position: relative;
+	/*width: 100%;*/
+	padding: 20px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 30px;
+}
+.cardBox .cards{
+	position: relative;
+	padding: 20px 30px;
+	border-radius: 20px;
+	display: flex;
+	justify-content: space-between;
+	cursor: pointer;
+	 box-shadow:  0 7px 20px #4d909fad;
+/*	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.2);*/
+}
+.main{
+	position: relative;
+	width: 100%;
+}
+.main1{
+	box-shadow:  0 7px 20px #4d909fad;
+}
+.main table{
+	width: 99%;
+	margin: 5px 10px;
+	border: 0.3px solid #8080805c;
+
+}
+.main table th{
+	white-space: nowrap;
+	background-color: #4d909f61;
+	border: 0.3px solid #8080805c;
+}
+.main table td{
+	border: 0.3px solid #8080805c;
+}
+.main table input,.main table select{
+	border: none;
+	box-shadow: none;
+	outline: none;
+}
+.main table input[type='number']{
+	width: 80px !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#edit_form table{
+	width: 100%;
+}
+b{
+	font-size: 1.5rem;
+	color: #4d909ffa;
+}
+.cardBox .cards .numbers{
+	position: relative;
+	font-weight: 500;
+	font-size: 2em;
+	color: var(--blue);
+}
+.cardBox .cards .cardName{
+	color: #080606b8;
+	font-size: 1.1em;
+	margin-top: 5px;
+}
+.cardBox .cards .iconBx{
+	color: var(--black2);
+	font-size: 2em;
+}
+.cardBox .cards:hover{
+	background: var(--blue);
+}
+
+.cardBox .cards:hover .numbers, 
+.cardBox .cards:hover .cardName, 
+.cardBox .cards:hover .iconBx{
+	color: var(--white);
+}
